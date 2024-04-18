@@ -1,16 +1,12 @@
 import { useState } from "react";
-import { AiOutlineUserAdd } from "react-icons/ai";
 import { FcSettings } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
-
 import { IoAddCircleOutline, IoCloudDoneOutline } from "react-icons/io5";
-import { MdOutlineCallMissedOutgoing } from "react-icons/md";
-
 import { Link } from "react-router-dom";
 import MenuItem from "./MenuItem";
 import { IoMdPersonAdd } from "react-icons/io";
-import { TbHelpHexagon } from "react-icons/tb";
+import { CgAssign, CgProfile } from "react-icons/cg";
 const Sidebar = () => {
   //   const [toggle, setToggle] = useState(false)
   const [isActive, setActive] = useState(false);
@@ -42,7 +38,7 @@ const Sidebar = () => {
       </div>
       {/* Sidebar */}
       <div
-        className={`z-10 md:fixed flex flex-col bg-gray-50 justify-between dark:bg-gray-900 overflow-x-hidden   border-r-2 dark:border-gray-800  w-64 space-y-6 pl-2 py-4 absolute inset-y-0 left-0 transform ${
+        className={`z-10 md:fixed flex flex-col bg-gray-50 justify-between dark:bg-gray-900 overflow-x-hidden border-r-2 dark:border-gray-800  w-64 space-y-6 pl-2 pt-4 absolute inset-y-0 left-0 transform ${
           isActive && "-translate-x-full"
         }  md:translate-x-0  transition duration-200 ease-in-out`}
       >
@@ -80,9 +76,9 @@ const Sidebar = () => {
               />
 
               <MenuItem
-                icon={MdOutlineCallMissedOutgoing}
-                label="Ongoing List"
-                address="/dashboard/ongoing-list"
+                icon={CgAssign}
+                label="Assigned Task"
+                address="/dashboard/assigned-task"
                 count={4}
               />
               <MenuItem
@@ -92,7 +88,7 @@ const Sidebar = () => {
                 count={5}
               />
               <MenuItem
-                icon={AiOutlineUserAdd}
+                icon={CgProfile}
                 label="Profile"
                 address="/dashboard/profile"
                 count={undefined}
@@ -111,14 +107,14 @@ const Sidebar = () => {
             address="/dashboard/settings"
             count={undefined}
           />
-          <div className="">
+          {/* <div className="">
             <MenuItem
               icon={TbHelpHexagon}
               label="Help"
               address="/dashboard/help"
               count={undefined}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </>
