@@ -1,7 +1,9 @@
+import Home from "@/pages/home/Home";
+
 const MainLayout = () => {
   return (
     <div>
-      <h1>MainLayout</h1>
+      <Home />
     </div>
   );
 };
