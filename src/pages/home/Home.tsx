@@ -35,7 +35,7 @@ const Home = () => {
             />
           </div>
         </div>
-        <Link to="/dasboard" className=" z-10 absolute">
+        <Link to="/dashboard" className=" z-10 absolute">
           <Button className="text-[10px] rounded-lg transform hover:scale-110">
             Let's Explore
           </Button>
