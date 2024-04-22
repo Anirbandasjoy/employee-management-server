@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,49 +18,119 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Link } from "react-router-dom";
+import { ChangeEvent, useState } from "react";
+import { useAxios } from "@/hooks/axios/useAxios";
+import toast from "react-hot-toast";
 
 const AddEmployee = () => {
+  const { axiosInstance } = useAxios();
+  const [role, setRole] = useState("");
+  const [designation, setDesignation] = useState("");
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const phone = formData.get("phone");
+    const password = formData.get("password");
+    const address = formData.get("address");
+    const employeeInfo = {
+      name,
+      email,
+      phone,
+      password,
+      address,
+      role,
+      designation,
+    };
+    console.log(employeeInfo);
+
+    try {
+      const toastId = toast.loading("Create a new employee...");
+      const res = await axiosInstance.post("/em/create", employeeInfo);
+      console.log(res.data);
+      // Reset form after successful submission
+      toast.success("Created a new emplyee", { id: toastId });
+      e.target.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="">
       <Card className="w-[550px] bg-gray-100">
         <CardHeader>
           <CardTitle>Added New Employee</CardTitle>
           <CardDescription>
-            Added a new employed fill up the form
+            Added a new employee, fill up the form
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Enter emplyee name" />
+                <Input
+                  required
+                  id="name"
+                  name="name"
+                  placeholder="Enter employee name"
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" placeholder="Enter emplyee email" />
+                <Input
+                  required
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter employee email"
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="phone">Phone</Label>
-                <Input id="phone" placeholder="Enter emplyee phone number" />
+                <Input
+                  required
+                  id="phone"
+                  type="number"
+                  name="phone"
+                  placeholder="Enter employee phone number"
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" placeholder="Enter emplyee password" />
+                <Input
+                  required
+                  id="password"
+                  name="password"
+                  placeholder="Enter employee password"
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="address">Address</Label>
-                <Input id="address" placeholder="Enter emplyee address" />
+                <Input
+                  required
+                  id="address"
+                  name="address"
+                  placeholder="Enter employee address"
+                />
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="role">Designation</Label>
-                <Select>
+              <div
+                className="flex flex-col space-y-1.5"
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setDesignation(e.target.value)
+                }
+              >
+                <Label htmlFor="designation">Designation</Label>
+                <Select required>
                   <SelectTrigger id="designation">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
                     <SelectItem value="frontendDeveloper">
-                      Forntend Developer
+                      Frontend Developer
                     </SelectItem>
                     <SelectItem value="backendDeveloper">
                       Backend Developer
@@ -70,31 +141,39 @@ const AddEmployee = () => {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex flex-col space-y-1.5">
+              <div
+                className="flex flex-col space-y-1.5"
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setRole(e.target.value)
+                }
+              >
                 <Label htmlFor="role">Role</Label>
-                <Select>
+                <Select required>
                   <SelectTrigger id="role">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
                     <SelectItem value="admin">Admin</SelectItem>
-                    <SelectItem value="employee">Employee</SelectItem>
+                    <SelectItem value="user">Employee</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
+            <CardFooter className="flex justify-between mt-8 py-0 px-0">
+              <Link to="/dashboard/manage-employee">
+                <Button variant="outline" className="text-xs">
+                  Manage Employee
+                </Button>
+              </Link>
+              <button
+                type="submit"
+                className="bg-emerald-400 py-2 px-4 text-[13px] text-gray-700 rounded-sm hover:bg-emerald-300"
+              >
+                Save
+              </button>
+            </CardFooter>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Link to="/dashboard">
-            <Button variant="outline" className="text-xs">
-              Back to Dasboard
-            </Button>
-          </Link>
-          <Button className="bg-emerald-300 text-[13px] text-gray-600 hover:bg-emerald-300">
-            Save
-          </Button>
-        </CardFooter>
       </Card>
     </div>
   );

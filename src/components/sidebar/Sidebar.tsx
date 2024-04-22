@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FcSettings } from "react-icons/fc";
+import { FcCameraAddon, FcSettings } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { IoAddCircleOutline, IoCloudDoneOutline } from "react-icons/io5";
@@ -67,6 +67,12 @@ const Sidebar = () => {
                 label="Add Employee"
                 address="/dashboard/add-employee"
                 count={2}
+              />
+              <MenuItem
+                icon={FcCameraAddon}
+                label="Manage Emplyee"
+                address="/dashboard/manage-employee"
+                count={undefined}
               />
               <MenuItem
                 icon={IoAddCircleOutline}

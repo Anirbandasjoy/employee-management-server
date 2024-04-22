@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div>
       <div className="flex h-screen items-center justify-center">
-        <div className="grid grid-cols-2 gap-20 transform  relative -rotate-45 bg-emerald-100 2xl:p-16 lg:p-10 rounded-md p-7 animate-pulse">
+        <div className="grid grid-cols-2 gap-20 transform  relative -rotate-45 bg-emerald-50 2xl:p-16 lg:p-10 rounded-md p-7 ">
           <div className="w-24 h-24 transform hover:scale-150 duration-100 rotate-45 cursor-pointer rounded-full ">
             <img
               className="w-full h-full rounded-full"
