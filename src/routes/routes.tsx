@@ -1,5 +1,6 @@
 import DashboardLayout from "@/layout/DashboardLayout";
 import MainLayout from "@/layout/MainLayout";
+import Login from "@/pages/auth/Login";
 import AddEmployee from "@/pages/dashboard/addEmployee/AddEmployee";
 import AssignedTask from "@/pages/dashboard/assignedTask/AssignedTask";
 import AssignTask from "@/pages/dashboard/assignTask/AssignTask";
@@ -52,5 +53,9 @@ export const router = createBrowserRouter([
         element: <ManageEmployee />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);

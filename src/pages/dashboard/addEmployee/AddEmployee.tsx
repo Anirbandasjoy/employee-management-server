@@ -18,23 +18,38 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Link } from "react-router-dom";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { useAxios } from "@/hooks/axios/useAxios";
 import toast from "react-hot-toast";
+import { AuthContextType } from "@/helper/type";
+import { AuthContext } from "@/contex/AuthProvider";
+import { updateProfile } from "firebase/auth";
 
 const AddEmployee = () => {
   const { axiosInstance } = useAxios();
   const [role, setRole] = useState("");
   const [designation, setDesignation] = useState("");
+  const { registerUser } = useContext(
+    AuthContext as React.Context<AuthContextType>
+  );
+  const [registerErr, setRegisterErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const phone = formData.get("phone");
-    const password = formData.get("password");
-    const address = formData.get("address");
+    const name = formData.get("name") as string; // Convert to string
+    const email = (formData.get("email") as string) || "";
+    const phone = formData.get("phone") as string; // Convert to string
+    const password = (formData.get("password") as string) || "";
+    const address = formData.get("address") as string; // Convert to string
+    setRegisterErr(null);
+    setLoading(true);
+    const toastId = toast.loading("Create a new employee...");
+    const user = await registerUser(email, password);
+    await updateProfile(user?.user, {
+      displayName: name,
+    });
     const employeeInfo = {
       name,
       email,
@@ -47,14 +62,15 @@ const AddEmployee = () => {
     console.log(employeeInfo);
 
     try {
-      const toastId = toast.loading("Create a new employee...");
       const res = await axiosInstance.post("/em/create", employeeInfo);
       console.log(res.data);
       // Reset form after successful submission
-      toast.success("Created a new emplyee", { id: toastId });
+      toast.success("Created a new employee", { id: toastId });
       e.target.reset();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,6 +84,11 @@ const AddEmployee = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {registerErr && (
+            <div className="py-3 bg-white dark:bg-gray-800 text-center px-3  border-red-600 border dark:text-red-500 text-red-500   dark:border-red-600  outline-red-500 text-sm rounded-md">
+              {registerErr}
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
@@ -106,6 +127,8 @@ const AddEmployee = () => {
                   id="password"
                   name="password"
                   placeholder="Enter employee password"
+                  pattern=".{6,}"
+                  title="Password must be at least 6 characters long"
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
@@ -169,7 +192,7 @@ const AddEmployee = () => {
                 type="submit"
                 className="bg-emerald-400 py-2 px-4 text-[13px] text-gray-700 rounded-sm hover:bg-emerald-300"
               >
-                Save
+                {loading ? "Loading" : "Save"}
               </button>
             </CardFooter>
           </form>

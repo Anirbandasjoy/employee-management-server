@@ -24,7 +24,7 @@ const AllEmployee = () => {
   const { employeeData } = useEmployee();
 
   return (
-    <div className="sm:h-[calc(100vh-120px)] h-[calc(100vh-170px)] overflow-auto ">
+    <div className="sm:h-[calc(100vh-80px)] h-[calc(100vh-170px)] overflow-auto ">
       <div className=" text-right">
         <Link to="/dashboard/add-employee">
           <Button className="my-2 rounded-sm text-xs bg-green-400 text-gray-700 hover:bg-green-500">
