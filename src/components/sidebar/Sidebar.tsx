@@ -1,7 +1,10 @@
 import React, { useContext, useState } from "react";
 import { FcCameraAddon, FcSettings } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
-import { MdOutlineDashboardCustomize } from "react-icons/md";
+import {
+  MdOutlineDashboardCustomize,
+  MdOutlineSelectAll,
+} from "react-icons/md";
 import { IoAddCircleOutline, IoCloudDoneOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import MenuItem from "./MenuItem";
@@ -82,9 +85,15 @@ const Sidebar = () => {
                     count={undefined}
                   />
                   <MenuItem
-                    icon={IoCloudDoneOutline} 
+                    icon={IoCloudDoneOutline}
                     label="Complete List"
                     address="/dashboard/complete-tasks"
+                    count={5}
+                  />
+                  <MenuItem
+                    icon={MdOutlineSelectAll}
+                    label="All task"
+                    address="/dashboard/all-task"
                     count={5}
                   />
                 </>

@@ -12,6 +12,8 @@ import PribetRoutes from "./PrivetRoutes";
 import AssignTask from "@/pages/dashboard/assignTask/AssignTask";
 import AddEmployee from "@/pages/dashboard/addEmployee/AddEmployee";
 import AdminRoutes from "./AdminRoutes";
+import AllTask from "@/pages/dashboard/completeTask/AllTask";
+import TaskDetails from "@/pages/dashboard/completeTask/TaskDetails";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +64,14 @@ export const router = createBrowserRouter([
       {
         path: "manage-employee",
         element: <ManageEmployee />,
+      },
+      {
+        path: "all-task",
+        element: <AllTask />,
+      },
+      {
+        path: "task-details/:id",
+        element: <TaskDetails />,
       },
     ],
   },
