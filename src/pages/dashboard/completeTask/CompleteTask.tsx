@@ -21,9 +21,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import useGetAllTask from "@/hooks/task/useGetAllTask";
 import { DateTimeFormatOptions } from "@/helper/type";
+import { useAxios } from "@/hooks/axios/useAxios";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const CompleteTask = () => {
-  const { allTask } = useGetAllTask();
+  const { axiosInstance } = useAxios();
+  const { allTask, refetch } = useGetAllTask();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [taskIdToDelete, setTaskIdToDelete] = useState(null);
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) return "";
 
@@ -38,8 +44,32 @@ const CompleteTask = () => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   };
+  const openDeleteDialog = (taskId: any) => {
+    setTaskIdToDelete(taskId);
+    setIsDeleteDialogOpen(true);
+  };
+  const closeDeleteDialog = () => {
+    setTaskIdToDelete(null);
+    setIsDeleteDialogOpen(false);
+  };
+
+  const handleDeleteTask = async () => {
+    try {
+      const toastId = toast.loading("Deleting...");
+
+      await axiosInstance.delete(`/task/delete-task/${taskIdToDelete}`);
+      toast.success("Deleted", { id: toastId });
+
+      console.log("Task deleted successfully");
+      closeDeleteDialog();
+      refetch();
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
   return (
-    <div className="sm:h-[calc(100vh-80px)] h-[calc(100vh-170px)] overflow-auto ">
+    <div className="sm:h-[calc(100vh-80px)] relative h-[calc(100vh-170px)] overflow-auto ">
       <div className=" text-right">
         <Link to="/dashboard/assign-task">
           <Button className="my-2 rounded-sm text-xs bg-green-400 text-gray-700 hover:bg-green-500">
@@ -89,8 +119,12 @@ const CompleteTask = () => {
                         <DropdownMenuContent>
                           <DropdownMenuItem>
                             <div className="flex gap-1 items-center cursor-pointer">
-                              <AiTwotoneDelete className="text-[19px]" />
-                              Delete
+                              <AiTwotoneDelete className="text-[16px]" />
+                              <button
+                                onClick={() => openDeleteDialog(task?.id)}
+                              >
+                                Delete
+                              </button>
                             </div>
                           </DropdownMenuItem>
 
@@ -112,6 +146,24 @@ const CompleteTask = () => {
             })}
         </TableBody>
       </Table>
+      {isDeleteDialogOpen && (
+        <div className="bg-cyan-400 rounded-md mx-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-xl h-60 w-96 flex flex-col justify-center items-center">
+          <div className="flex gap-2">
+            <Button
+              className="bg-red-400 rounded-sm"
+              onClick={closeDeleteDialog}
+            >
+              Cencel
+            </Button>
+            <Button
+              className="bg-green-400 rounded-sm"
+              onClick={handleDeleteTask}
+            >
+              Confrim
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

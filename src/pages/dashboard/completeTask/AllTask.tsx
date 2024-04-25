@@ -87,18 +87,22 @@ const AllTask = () => {
                         <BsThreeDots />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
-                        <DropdownMenuItem>
-                          <div className="flex gap-1 items-center cursor-pointer">
-                            <AiTwotoneDelete className="text-[19px]" />
-                            Delete
-                          </div>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <div className="flex gap-1 items-center cursor-pointer">
-                            <FaRegEdit className="text-[16px]" />
-                            Edit
-                          </div>
-                        </DropdownMenuItem>
+                        {task?.status === "completed" && (
+                          <DropdownMenuItem>
+                            <div className="flex gap-1 items-center cursor-pointer">
+                              <AiTwotoneDelete className="text-[19px]" />
+                              Delete
+                            </div>
+                          </DropdownMenuItem>
+                        )}
+                        {task?.status === "pending" && (
+                          <DropdownMenuItem>
+                            <div className="flex gap-1 items-center cursor-pointer">
+                              <FaRegEdit className="text-[16px]" />
+                              Edit
+                            </div>
+                          </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem>
                           <Link
                             to={`/dashboard/task-details/${task?.id}`}

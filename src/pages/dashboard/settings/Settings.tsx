@@ -15,7 +15,6 @@ const Settings = () => {
   };
   return (
     <div>
-      <div className="mb-2">Settings</div>
       <Button
         className="bg-red-500 rounded-lg hover:bg-red-400"
         onClick={handleLogOut}

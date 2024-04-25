@@ -63,7 +63,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-employee",
-        element: <ManageEmployee />,
+        element: (
+          <AdminRoutes>
+            <ManageEmployee />
+          </AdminRoutes>
+        ),
       },
       {
         path: "all-task",
