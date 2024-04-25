@@ -10,7 +10,7 @@ const useGetSingleEmployee = (email: string | undefined | null) => {
   } = useQuery({
     queryKey: ["singleEmployee", email],
     queryFn: async () => {
-      const { data } = await axiosInstance.get(`/single-employee/${email}`);
+      const { data } = await axiosInstance.get(`/em/single-employee/${email}`);
       return data;
     },
   });

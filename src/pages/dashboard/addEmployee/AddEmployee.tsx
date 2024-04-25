@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChangeEvent, useContext, useState } from "react";
 import { useAxios } from "@/hooks/axios/useAxios";
 import toast from "react-hot-toast";
@@ -26,10 +26,11 @@ import { AuthContext } from "@/contex/AuthProvider";
 import { updateProfile } from "firebase/auth";
 
 const AddEmployee = () => {
+  const navigate = useNavigate();
   const { axiosInstance } = useAxios();
   const [role, setRole] = useState("");
   const [designation, setDesignation] = useState("");
-  const { registerUser } = useContext(
+  const { registerUser, logOut } = useContext(
     AuthContext as React.Context<AuthContextType>
   );
   const [registerErr, setRegisterErr] = useState<string | null>(null);
@@ -67,6 +68,8 @@ const AddEmployee = () => {
       // Reset form after successful submission
       toast.success("Created a new employee", { id: toastId });
       e.target.reset();
+      logOut();
+      navigate("/login");
     } catch (error) {
       console.log(error);
     } finally {
@@ -75,13 +78,11 @@ const AddEmployee = () => {
   };
 
   return (
-    <div className="">
-      <Card className="w-[550px] bg-gray-100">
+    <div className="flex justify-center">
+      <Card className="w-[550px] bg-green-200">
         <CardHeader>
-          <CardTitle>Added New Employee</CardTitle>
-          <CardDescription>
-            Added a new employee, fill up the form
-          </CardDescription>
+          <CardTitle>Please Register Now</CardTitle>
+          <CardDescription>Register please , fill up the form</CardDescription>
         </CardHeader>
         <CardContent>
           {registerErr && (
@@ -176,7 +177,6 @@ const AddEmployee = () => {
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="admin">Admin</SelectItem>
                     <SelectItem value="user">Employee</SelectItem>
                   </SelectContent>
                 </Select>

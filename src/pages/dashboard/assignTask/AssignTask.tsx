@@ -30,8 +30,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import useEmployee from "@/hooks/employee/useEmployee";
+import { useAxios } from "@/hooks/axios/useAxios";
+import toast from "react-hot-toast";
 
-const AddEmployee = () => {
+const AssignTask = () => {
+  const { axiosInstance } = useAxios();
   const { employeeData } = useEmployee();
   console.log(employeeData);
   const [priority, setPriority] = useState("");
@@ -46,11 +49,20 @@ const AddEmployee = () => {
     const taskInfo = {
       title,
       description,
+      deadline: date,
       priority,
-      assignedEmployee,
-      date,
+      assigned_employee_id: assignedEmployee,
+      status: "pending",
     };
-    console.log(taskInfo);
+    try {
+      const toastId = toast.loading("Assigning task...");
+      const { data } = await axiosInstance.post("/task/create", taskInfo);
+      console.log(data);
+      toast.success("Assigned task successfully", { id: toastId });
+      e.target.reset();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -124,7 +136,7 @@ const AddEmployee = () => {
                   </SelectTrigger>
                   <SelectContent position="popper">
                     <SelectItem value="low">Low</SelectItem>
-                    <SelectItem value="moderate">Moderate</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
                     <SelectItem value="high">High</SelectItem>
                   </SelectContent>
                 </Select>
@@ -144,7 +156,7 @@ const AddEmployee = () => {
                     {employeeData?.map((employee: any) => {
                       return (
                         <SelectItem key={employee?.id} value={employee?.id}>
-                          {employee?.name}
+                          {employee?.role === "user" && <> {employee?.name}</>}
                         </SelectItem>
                       );
                     })}
@@ -174,4 +186,4 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default AssignTask;

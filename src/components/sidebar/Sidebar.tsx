@@ -1,13 +1,18 @@
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FcCameraAddon, FcSettings } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { IoAddCircleOutline, IoCloudDoneOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import MenuItem from "./MenuItem";
-import { IoMdPersonAdd } from "react-icons/io";
+
 import { CgAssign, CgProfile } from "react-icons/cg";
+import { AuthContext } from "@/contex/AuthProvider";
+import { AuthContextType } from "@/helper/type";
+import useGetSingleEmployee from "@/hooks/employee/useGetSingleEmployee";
 const Sidebar = () => {
+  const { user } = useContext(AuthContext as React.Context<AuthContextType>);
+  const { sigleUserProfile } = useGetSingleEmployee(user?.email);
   //   const [toggle, setToggle] = useState(false)
   const [isActive, setActive] = useState(false);
 
@@ -62,37 +67,37 @@ const Sidebar = () => {
                 address="/dashboard"
                 count={undefined}
               />
-              <MenuItem
-                icon={IoMdPersonAdd}
-                label="Add Employee"
-                address="/dashboard/add-employee"
-                count={2}
-              />
-              <MenuItem
-                icon={FcCameraAddon}
-                label="Manage Emplyee"
-                address="/dashboard/manage-employee"
-                count={undefined}
-              />
-              <MenuItem
-                icon={IoAddCircleOutline}
-                label="Assign Task"
-                address="/dashboard/assign-task"
-                count={undefined}
-              />
+              {sigleUserProfile?.role === "admin" && (
+                <>
+                  <MenuItem
+                    icon={FcCameraAddon}
+                    label="Manage Emplyee"
+                    address="/dashboard/manage-employee"
+                    count={undefined}
+                  />
+                  <MenuItem
+                    icon={IoAddCircleOutline}
+                    label="Assign Task"
+                    address="/dashboard/assign-task"
+                    count={undefined}
+                  />
+                  <MenuItem
+                    icon={IoCloudDoneOutline} 
+                    label="Complete List"
+                    address="/dashboard/complete-tasks"
+                    count={5}
+                  />
+                </>
+              )}
 
-              <MenuItem
-                icon={CgAssign}
-                label="Assigned Task"
-                address="/dashboard/assigned-task"
-                count={4}
-              />
-              <MenuItem
-                icon={IoCloudDoneOutline}
-                label="Complete List"
-                address="/dashboard/complete-tasks"
-                count={5}
-              />
+              {sigleUserProfile?.role === "user" && (
+                <MenuItem
+                  icon={CgAssign}
+                  label="Assigned Task"
+                  address="/dashboard/assigned-task"
+                  count={4}
+                />
+              )}
               <MenuItem
                 icon={CgProfile}
                 label="Profile"

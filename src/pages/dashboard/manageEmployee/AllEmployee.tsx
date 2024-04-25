@@ -26,9 +26,9 @@ const AllEmployee = () => {
   return (
     <div className="sm:h-[calc(100vh-80px)] h-[calc(100vh-170px)] overflow-auto ">
       <div className=" text-right">
-        <Link to="/dashboard/add-employee">
+        <Link to="/dashboard/assign-task">
           <Button className="my-2 rounded-sm text-xs bg-green-400 text-gray-700 hover:bg-green-500">
-            Add Employee
+            Assign task
           </Button>
         </Link>
       </div>
@@ -48,7 +48,7 @@ const AllEmployee = () => {
         <TableBody className="">
           {employeeData?.map((em: any) => {
             return (
-              <TableRow>
+              <TableRow key={em?.id}>
                 <TableCell className="text-black hover:underline cursor-pointer">
                   <p>{em?.name}</p>
                 </TableCell>

@@ -1,9 +1,14 @@
-import useEmployee from "@/hooks/employee/useEmployee";
 import AllEmployee from "./AllEmployee";
+import React, { useContext } from "react";
+import { AuthContext } from "@/contex/AuthProvider";
+import { AuthContextType } from "@/helper/type";
+import useGetSingleEmployee from "@/hooks/employee/useGetSingleEmployee";
 
 const ManageEmployee = () => {
-  const { employeeData } = useEmployee();
-  console.log(employeeData);
+  const { user } = useContext(AuthContext as React.Context<AuthContextType>);
+  const { sigleUserProfile } = useGetSingleEmployee(user?.email);
+  console.log(sigleUserProfile);
+
   return (
     <div>
       <h1>Manage Employee</h1>
